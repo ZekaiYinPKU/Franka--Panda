@@ -163,7 +163,9 @@ void * control_one(void* args){
 **理解这部分的运行对于理解使用libfranka控制机械臂非常重要。**
     
 ### 2.2 夹爪模块
-gripper模块目前实现的函数共有三个，分别是抓取、放开和重置，对应script中的gripper_close.py、gripper_open.py、和gripper_homing.py这部分比较简单，唯一值得一提的是gripper_close函数
+gripper模块目前实现的函数共有三个，分别是抓取、放开和重置，对应script中的gripper_close.py、gripper_open.py、和gripper_homing.py。
+
+这部分比较简单，唯一值得一提的是gripper_close函数
 ```
 import numpy as np
 import sys
@@ -176,7 +178,7 @@ r.gripper_grasp(grasping_width = 0.035,  speed = 0.1,  force = 50,  epsilon_inne
 gripper_grasp一共有5个参数，speed是抓取的速度、force是抓取使用的力，当抓取反馈的力达到force设定的值的时候将会停止抓取，此时如果两个夹爪的距离位于(grasping_width-epsilon_inner, grasping_width+epsilon_outer)时，在当前设置下为(0.03米,0.04米)之间，认为grasping成功并返回1，否则返回0。
 
 ### 2.3 抓取模块
-scripts中的grasping.py是使用graspnet作为gripper_to_robot pose estimator的抓取程序，需要对camera进行标定后将transformation矩阵赋值到178行的robot_to_camera_transformation，然后就可以抓取了。逆向运动学（从gripper的姿态求joint）使用的是pybullet进行求解。
+scripts中的grasping.py是使用graspnet作为gripper_to_robot pose estimator的抓取程序，需要对camera进行标定后将transformation矩阵赋值到178行的robot_to_camera_transformation，然后就可以抓取了，程序会自动计算抓取的轨迹和路径。逆向运动学（从gripper的姿态求joint）使用的是pybullet进行求解。
 抓取的函数我已经写好集成在robotmodule.cpp第578行的grasp_object函数。
 
 ### 2.4 其他辅助模块
