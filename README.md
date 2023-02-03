@@ -1,5 +1,4 @@
 # Franka-Control
-这是静园五院两台franka-panda机械臂的简要使用说明
 ## 1、前言
 1、
   本package是在陈德铭同学的package的基础上修改得到的，原文地址https://github.com/Derick317/Franka-Control
