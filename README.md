@@ -22,10 +22,8 @@ https://frankaemika.github.io/libfranka/
 4、Panda机械臂软件上的小毛病一大堆，一定勤用timeshift。
 
 ## 2、Franka_Control
-### 2.1、机械臂模块
-这个package是在陈德铭同学开发的机械臂控制系统的基础上改写的，最为关键的文件是/robot_arm/Franka-Control/robotmodule中的robotmodule.cpp以及/robot_arm/Franka-Control/franka.py。开发及改写的根本原因是Emika公司官方给的libfranka的在机械臂运动时拒绝其他线程读取机械臂的状态，导致无法获得机械臂实时的信息，所以就重新写了一份机械臂运动控制系统，并且将需要读取的状态重新存储在一个新的全局变量中。
 
-在scripts里共有两个和基本控制相关的脚本，move_according_to_array.py和move_to_one_pos.py，前者会操作机械臂在几个不同的位置之间循环移动，后者会操作机械臂仅运行到下一个位置。
+这个package是在陈德铭同学开发的机械臂控制系统的基础上改写的，最为关键的文件是/robot_arm/Franka-Control/robotmodule中的robotmodule.cpp以及/robot_arm/Franka-Control/franka.py。开发及改写的根本原因是Emika公司官方给的libfranka的在机械臂运动时拒绝其他线程读取机械臂的状态，导致无法获得机械臂实时的信息，所以就重新写了一份机械臂运动控制系统，并且将需要读取的状态重新存储在一个新的全局变量中。
 
 每次修改robotmodule.cpp中的程序后，需要运行
 ```
@@ -33,7 +31,10 @@ sh /robot_arm/Franka-Control/buildmodule.sh
 ```
 重新编译package，如果移动了整个package的位置，则会编译报错为CMakeCache.txt记录的不一致，此时需要删除/robot_arm/Franka-Control/build文件夹中的所有内容重新编译
 
-以move_to_one_pos为例，整个package的使用逻辑如下：
+### 2.1、机械臂模块
+在scripts里共有两个和基本控制相关的脚本，move_according_to_array.py和move_to_one_pos.py，前者会操作机械臂在几个不同的位置之间循环移动，后者会操作机械臂仅运行到下一个位置。
+
+以move_to_one_pos为例，机械臂控制程序的运行逻辑如下：
   主程序（python）首先创建一个robot实例R
   ```
   #np.array([0, -np.pi / 4, 0, -3 * np.pi / 4, 0, np.pi / 2, np.pi / 4])是设置的robot初始状态
@@ -63,7 +64,7 @@ sh /robot_arm/Franka-Control/buildmodule.sh
   }
   ```
  
-  注：每个从python传给C的变量都需要使用franka.py中的convert_type函数，具体请学习ctype的使用。
+  注：每个从python传给C的变量都需要使用franka.py中的convert_type函数，**具体请学习ctype的使用**。
   
   主程序调用franka.py中的start_control_one(duration = 7.0)，进一步调用robotmodule.cpp中的start_control_one(), 
   robotmodule.cpp中的start_control_one()会**创建一个新的线程**执行robotmodule.cpp中的control_one()函数，机械臂开始往下一个目标角度移动，duration为这段路径所需要的时间。
