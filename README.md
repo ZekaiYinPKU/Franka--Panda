@@ -107,7 +107,7 @@ sh /robot_arm/Franka-Control/buildmodule.sh
     
 ```
 
-在新的线程中，会调用control_one()函数，其他manipulation相关函数和这个差不多，我们目前采用的是基于角度进行控制，请阅读[libfranka官方文档](https://frankaemika.github.io/libfranka/classfranka_1_1Robot.html#a5b5ba0a4f2bfd20be963b05622e629e1)中关于control的部分
+在新的线程中，会调用control_one()函数，其他manipulation相关函数和这个差不多，我们目前采用的是基于角度进行控制，请阅读[libfranka官方文档](https://frankaemika.github.io/libfranka/classfranka_1_1Robot.html#a5b5ba0a4f2bfd20be963b05622e629e1)中关于control的部分。
 
 ```
 void * control_one(void* args){
