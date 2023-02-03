@@ -55,7 +55,8 @@ sh /robot_arm/Franka-Control/buildmodule.sh
   #franka.py line 214
   def set_next_goal_to_controller(self):
     lib.set_next_goal_joints(convert_type(list(self.next_goal)))
-
+  ```
+  ```
   //robotmodule.cpp line 478
   void set_next_goal_joints(double * joints)
   {
@@ -75,7 +76,8 @@ sh /robot_arm/Franka-Control/buildmodule.sh
   #franka.py line 220
   def start_control_one(self, duration = 7.0):
     lib.start_control_one(convert_type(self.obj), convert_type(self.gripper), convert_type(duration))
-   
+  ```
+  ```
   //robotmodule.cpp line 486
   void start_control_one(franka::Robot *robot,franka::Gripper * gripper, double duration){
 
