@@ -1,4 +1,4 @@
-# Franka--Panda
+# Franka-Control
 这是静园五院两台franka-panda机械臂的简要使用说明
 ## 1、前言
 1、
