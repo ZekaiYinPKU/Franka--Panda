@@ -222,6 +222,8 @@ scripts中的grasping.py是使用graspnet作为gripper_to_robot pose estimator�
 使用这个函数可以将机械臂回归到默认姿势。
 
 ## 3、机械臂相关
+请阅读https://frankaemika.github.io/docs/overview.html
+
 ### 3.1、基础使用方法
 0、机械臂由机械臂主体、机箱、红色按钮、灰色按钮和手持紧急停止开关组成，还有一根网线从机箱连接到电脑。红色按钮是电源按钮，是上下按的；灰色按钮是模式切换按钮，按下去需要拧一下，想要抬起来的时候反着拧一下就会自己弹起来。
 
