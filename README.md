@@ -32,7 +32,7 @@ https://frankaemika.github.io/libfranka/
   #np.array([0, -np.pi / 4, 0, -3 * np.pi / 4, 0, np.pi / 2, np.pi / 4])是设置的robot初始状态
   r = Robot("172.16.0.2",np.array([0, -np.pi / 4, 0, -3 * np.pi / 4, 0, np.pi / 2, np.pi / 4]), 0.03)
   ```
-  ```
+
   主程序调用franka.py中的函数set_next_goal()，将目标角度赋值给robot实例R的self.next_goal
   ```
   #franka.py line 211
@@ -95,6 +95,7 @@ https://frankaemika.github.io/libfranka/
 ```
 
 在新的线程中，会调用control_one()函数，其他manipulation相关函数和这个差不多
+
 ```
 void * control_one(void* args){
     basic_data * data = (basic_data*)args;
