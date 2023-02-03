@@ -231,4 +231,6 @@ franka也可以通过172.16.0.2/desk进行简单控制，在这个模式下无�
 3、名为franka的机械臂网络连接速度比gaitech慢，具体表现为打开172.16.0.2界面时会卡在connecting界面。一般情况下稍等片刻即可，如果一直connecting，则需要参考[franka官网](http://www.franka.cn/FCI/getting_started.html#setting-up-the-network)重新设置网络。
 
 4、如果在运行程序时报错libfranka:······can not operate in this mode，无论机械臂是蓝灯还是白灯，都需要使用灰色按钮重置机械臂状态。
+
+5、重启机械臂+重启电脑解决99%的问题。
  
