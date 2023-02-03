@@ -165,7 +165,7 @@ void * control_one(void* args){
     return nullptr;
 }
 ```   
-**理解这部分的运行对于理解使用libfranka控制机械臂非常重要。**
+**理解2.1模块对于理解使用libfranka控制机械臂非常重要。**
     
 ### 2.2 夹爪模块
 gripper模块目前实现的函数共有三个，分别是抓取、放开和重置，对应script中的gripper_close.py、gripper_open.py、和gripper_homing.py。
