@@ -67,7 +67,7 @@ sh /robot_arm/Franka-Control/buildmodule.sh
   }
   ```
  
-  注：每个从python传给C的变量都需要使用franka.py中的convert_type函数，**具体请学习ctype的使用**。
+  注：每个从python传给C的变量都需要使用franka.py中的convert_type函数，**具体请学习ctype的使用并阅读robotmodule.h**。
   
   主程序(line 17)调用franka.py中的start_control_one(duration = 7.0)，进一步调用robotmodule.cpp中的start_control_one(), 
   robotmodule.cpp中的start_control_one()会**创建一个新的线程**执行robotmodule.cpp中的control_one()函数，机械臂开始往下一个目标角度移动，duration为这段路径所需要的时间。
@@ -111,6 +111,7 @@ sh /robot_arm/Franka-Control/buildmodule.sh
 在新的线程中，会调用control_one()函数，其他manipulation相关函数和这个差不多，我们目前采用的是基于角度进行控制，请阅读[libfranka官方文档](https://frankaemika.github.io/libfranka/classfranka_1_1Robot.html#a5b5ba0a4f2bfd20be963b05622e629e1)中关于control的部分。
 
 ```
+//robotmodule.cpp line 335
 void * control_one(void* args){
     basic_data * data = (basic_data*)args;
     franka::Robot * robot = data->robot;
