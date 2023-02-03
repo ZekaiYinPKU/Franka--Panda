@@ -1,7 +1,7 @@
 # Franka-Control
 ## 1、前言
 1、
-  本package是在陈德铭同学的package的基础上修改得到的，原文地址https://github.com/Derick317/Franka-Control
+  本package是在陈德铭同学的package的基础上修改得到的，原文地址https://github.com/Derick317/Franka-Control， 感谢陈德铭同学的大力支持和帮助。
 
 2、本package有非常多的前置系统要设置，包括实时内核、franka_ros、libfranka等，以及配套的realsense相关package，具体可参考
 
