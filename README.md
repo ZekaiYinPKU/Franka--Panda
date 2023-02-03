@@ -9,7 +9,7 @@
 
 以及陈德铭同学的https://github.com/Derick317/Typora/blob/main/Softwares/Franka_and_ROS/set_up.md
 
-进行安装，目前这个package可以在静园五院104控制机械臂的主机上使用，scripts文件夹中的所有程序均可运行。
+进行安装，目前这个package可以在静园五院104控制机械臂的主机上使用，scripts文件夹中的所有程序均可python3运行。
 
 3、
 franka官方文档：
@@ -36,6 +36,7 @@ sh /robot_arm/Franka-Control/buildmodule.sh
 在scripts里共有两个和基本控制相关的脚本，move_according_to_array.py和move_to_one_pos.py，前者会操作机械臂在几个不同的位置之间循环移动，后者会操作机械臂仅运行到下一个位置。
 
 以move_to_one_pos为例，机械臂控制程序的运行逻辑如下：
+
   主程序(line 7)首先创建一个robot实例R。
   ```
   #np.array([0, -np.pi / 4, 0, -3 * np.pi / 4, 0, np.pi / 2, np.pi / 4])是设置的robot初始状态
