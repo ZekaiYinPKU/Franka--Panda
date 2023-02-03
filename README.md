@@ -175,7 +175,7 @@ gripper_grasp一共有5个参数，speed是抓取的速度、force是抓取使�
 
 ### 2.3 抓取模块
 scripts中的grasping.py是使用graspnet作为gripper_to_robot pose estimator的抓取程序，需要对camera进行标定后将transformation矩阵赋值到178行的robot_to_camera_transformation，然后就可以抓取了。逆向运动学（从gripper的姿态求joint）使用的是pybullet进行求解。
-抓取的函数我已经写好集成在robotmodule.cpp第578行的grasp_object函数
+抓取的函数我已经写好集成在robotmodule.cpp第578行的grasp_object函数。
 
 ### 2.4 其他辅助模块
 #### 2.4.1 camera.py
