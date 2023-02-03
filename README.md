@@ -24,11 +24,11 @@ https://frankaemika.github.io/libfranka/
 
 这个package是在陈德铭同学开发的机械臂控制系统的基础上改写的，最为关键的文件是/robot_arm/Franka-Control/robotmodule中的robotmodule.cpp以及/robot_arm/Franka-Control/franka.py。开发及改写的根本原因是Emika公司官方给的libfranka的在机械臂运动时拒绝其他线程读取机械臂的状态，导致无法获得机械臂实时的信息，所以就重新写了一份机械臂运动控制系统，并且将需要读取的状态重新存储在一个新的全局变量中。
 
-每次修改robotmodule.cpp中的程序后，需要运行
+**每次修改robotmodule.cpp中的程序后，需要运行**
 ```
 sh /robot_arm/Franka-Control/buildmodule.sh
 ```
-重新编译package。
+**重新编译package。**
 
 如果移动了整个package的位置，会编译报错，大体意思为CMakeCache.txt记录的不一致，此时需要删除/robot_arm/Franka-Control/build文件夹中的所有内容重新编译
 
