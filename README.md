@@ -34,27 +34,6 @@ sh /robot_arm/Franka-Control/buildmodule.sh
 ### 2.1、机械臂模块
 在scripts里共有两个和基本控制相关的脚本，move_according_to_array.py和move_to_one_pos.py，前者会操作机械臂在几个不同的位置之间循环移动，后者会操作机械臂仅运行到下一个位置。
 
-```
-sys.path.append('/home/hyperplane/Desktop/robot_arm/Franka-Control')
-from franka import *
-from policy import Policy
-r = Robot("172.16.0.2",np.array([0, -np.pi / 4, 0, -3 * np.pi / 4, 0, np.pi / 2, np.pi / 4]), 0.03)
-
-#   set_next_goal() will set the goal joint into a variable.
-r.set_next_goal([-0.012850516780949475,-0.7838697842836208,0.013130240670280811,-2.3651562852692187,-0.013147315034667732,1.57067876291275,0.7788902073593602])
-
-#   set_next_goal_to_controller() will send the goal in the variable to the controller.
-r.set_next_goal_to_controller()
-
-#   start_control_one will start move the robot, duration will be the time cost for the trajectory.
-duration = 7.0
-r.start_control_one(duration)
-
-#   start_control_one() will create a new thread to control, while doing so, we need to sleep the main thread.
-while(1):
-    print(r.get_q_control())
-```
-
 以move_to_one_pos为例，机械臂控制程序的运行逻辑如下：
   主程序（python）首先创建一个robot实例R
   ```
@@ -89,6 +68,8 @@ while(1):
   
   主程序调用franka.py中的start_control_one(duration = 7.0)，进一步调用robotmodule.cpp中的start_control_one(), 
   robotmodule.cpp中的start_control_one()会**创建一个新的线程**执行robotmodule.cpp中的control_one()函数，机械臂开始往下一个目标角度移动，duration为这段路径所需要的时间。
+  
+  这也是为什么主程序move_to_one_pose.py中第20行我们需要将主程序陷入死循环，因为control_one()是在一个新线程中运行的，如果主程序结束了，那么control_one()也将随之中断
   ```
   #franka.py line 220
   def start_control_one(self, duration = 7.0):
