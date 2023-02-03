@@ -25,6 +25,14 @@ https://frankaemika.github.io/libfranka/
 ### 2.1、机械臂模块
 这个package是在陈德铭同学开发的机械臂控制系统的基础上改写的，最为关键的文件是/robot_arm/Franka-Control/robotmodule中的robotmodule.cpp以及/robot_arm/Franka-Control/franka.py。开发及改写的根本原因是Emika公司官方给的libfranka的在机械臂运动时拒绝其他线程读取机械臂的状态，导致无法获得机械臂实时的信息，所以就重新写了一份机械臂运动控制系统，并且将需要读取的状态重新存储在一个新的全局变量中。
 
+在scripts里共有两个和基本控制相关的脚本，move_according_to_array.py和move_to_one_pos.py，前者会操作机械臂在几个不同的位置之间循环移动，后者会操作机械臂仅运行到下一个位置。
+
+每次修改robotmodule.cpp中的程序后，需要运行
+```
+sh /robot_arm/Franka-Control/buildmodule.sh
+```
+重新编译package，如果移动了整个package的位置，则会编译报错为CMakeCache.txt记录的不一致，此时需要删除/robot_arm/Franka-Control/build文件夹中的所有内容重新编译
+
 以move_to_one_pos为例，整个package的使用逻辑如下：
   主程序（python）首先创建一个robot实例R
   ```
@@ -93,13 +101,15 @@ https://frankaemika.github.io/libfranka/
     
 ```
 
-在新的线程中，会调用control_one()函数，其他manipulation相关函数和这个差不多
+在新的线程中，会调用control_one()函数，其他manipulation相关函数和这个差不多，我们目前采用的是基于角度进行控制，请阅读[libfranka官方文档](https://frankaemika.github.io/libfranka/classfranka_1_1Robot.html#a5b5ba0a4f2bfd20be963b05622e629e1)中关于control的部分
 
 ```
 void * control_one(void* args){
     basic_data * data = (basic_data*)args;
     franka::Robot * robot = data->robot;
     franka::Gripper *gripper =data->gripper;
+    
+    //速度
     double duration = data->duration;
     
 
@@ -108,7 +118,11 @@ void * control_one(void* args){
 
     double time = 0.0;
     end_joints = JointPosition_next;
-    //回调函数，可以理解为robot->control()函数的参数是个正在运行的函数，返回值为new_joints, robot->control()函数根据new_joints的值执行下一步的动作。
+    
+    //回调函数，可以理解为robot->control()函数的参数是个正在运行的函数
+    //当时间还没有结束的时候，它的返回值为new_joints, robot->control()函数根据new_joints的值执行下一步的动作。
+    //当时间结束后，它的返回值为franka::MotionFinished((franka::JointPositions)robot_state.q)，动作停止。
+    
     robot->control([&time, &start_joints, &end_joints, &duration](const franka::RobotState& robot_state,
                                             franka::Duration period) -> franka::JointPositions  { 
         if (time == 0.0) 
@@ -141,18 +155,9 @@ void * control_one(void* args){
     flag_control = 0;
     return nullptr;
 }
-```
+```   
+**理解这部分的运行对于理解使用libfranka控制机械臂非常重要。**
     
-  
-    
-    
- 
-  
-  
-  
-  
-  
-
 ### 2.2 夹爪模块
 gripper模块目前实现的函数共有三个，分别是抓取、放开和重置，对应script中的gripper_close.py、gripper_open.py、和gripper_homing.py这部分比较简单，唯一值得一提的是gripper_close函数
 ```
@@ -180,13 +185,13 @@ scripts中的grasping.py是使用graspnet作为gripper_to_robot pose estimator�
 #### 2.4.3 return_to_default_position.py
 使用这个函数可以将机械臂回归到默认姿势。
 
-## 6、机械臂使用方法、常见的硬件错误及应对方案
-### 6.1、使用方法
+## 3、机械臂使用方法、常见的硬件错误及应对方案
+### 3.1、使用方法
 0、机械臂由机械臂主体、机箱、红色按钮、灰色按钮和手持紧急停止开关组成，还有一根网线从机箱连接到电脑。
 
 1、开机：先开白色桌子里的机箱开关，此时机械臂会变成黄灯，之后在浏览器登录172.16.0.2，在desk界面右侧打开锁定，机械臂会变为蓝灯。
 
-2、关机：先在desk界面里shut down，等待3分钟左右desk会弹一个提示关闭机箱，此时再断电
+2、关机：先在desk界面里shut down，等待3分钟左右desk会弹一个提示关闭机箱，此时再断电。**切勿直接断电。**
 
 3、重启：在desk界面reboot
 
@@ -200,7 +205,10 @@ scripts中的grasping.py是使用graspnet作为gripper_to_robot pose estimator�
 
 7、在白灯模式下拖动机械臂如果关节运行到极限会进入红灯模式报错，此时需要重启机械臂（查看第3条）
 
-### 6.2、常见错误及应对方案
+### 3.2、简单示教模式
+franka也可以通过172.16.0.2/desk进行简单控制，在这个模式下无法读取内部数据，也无法运行其他程序抢占机械臂控制权。但是由于gripper和robot在运行逻辑中是两个不同的实例，可以运行夹爪相关的程序控制夹爪合并。
+
+### 3.3、常见错误及应对方案
 1、名为gaitech的机械臂的红色按钮有时候会被卡住，具体表现为无论如何机械臂都无法开机，需要用力往上拔一下红色按钮。
 
 2、名为gaitech的机械臂的gripper有的时候好像接触不良，具体表现为程序控制gripper合并但是机械臂没反应，通常情况下等1分钟左右即可，如果反复尝试都没反应，就用手合并一下gripper的夹爪。
