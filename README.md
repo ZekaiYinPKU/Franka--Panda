@@ -167,6 +167,28 @@ void * control_one(void* args){
     flag_control = 0;
     return nullptr;
 }
+```
+move_according_to_array.py会控制机械臂在几个位置之间循环移动，这几个位置在robotmodule.cpp的第430行。
+
+move_according_to_array.py的第21行开始是从角度出发计算panda各个keypoint相对于base的transformation矩阵的，
+```
+    angle_1,angle_2,angle_3,angle_4,angle_5,angle_6,angle_7 = r.get_q_control()
+
+    panda_link_0_to_base = RMAT([0.000,0.000,0.000],[0.000,0.000, 0.000])#base
+    
+    panda_link_1_to_base = panda_link_0_to_base @ RMAT([0.000, 0.000, angle_1], [0.000, 0.000, 0.333])
+    panda_link_2_to_base = panda_link_1_to_base @ RMAT([-1.57079633e+00, angle_2, 0.000],[0.000, 0.000, 0.000])
+    #link1和link2之间没有translation，但是有一个joint的rotation
+    panda_link_3_to_base = panda_link_2_to_base @ RMAT([1.57079633e+00, -angle_3, 0.000],[0.000, -0.316, 0.000])
+    panda_link_4_to_base = panda_link_3_to_base @ RMAT([-1.57079633e+00, 3.14159265358979 + angle_4, -3.14159265358979],[0.083, 0.000, 0.000])
+    panda_link_5_to_base = panda_link_4_to_base @ RMAT([-1.57079633e+00, angle_5, 0.0000],[-0.083, 0.384, 0.000])
+    panda_link_6_to_base = panda_link_5_to_base @ RMAT([1.57079633e+00, -angle_6, 0.000],[0.000, 0.000, 0.000])
+    panda_link_7_to_base = panda_link_6_to_base @ RMAT([1.57079633e+00, -angle_7, 0.000],[0.088, 0.000, 0.000])
+
+    panda_link_8_to_base = panda_link_7_to_base @ RMAT([0.000, 0.000, 0.000],[0.000, 0.000, 0.107])
+    panda_hand_to_base = panda_link_8_to_base @ RMAT([0.000, 0.000, -0.785],[0.000, 0.000, 0.000])
+    panda_ee_to_base = panda_hand_to_base @ RMAT([0.000, 0.000, 0.000],[0.000, 0.000, 0.128])
+    print(panda_ee_to_base)
 ```   
 **理解2.1模块对于理解使用libfranka控制机械臂非常重要。**
     
