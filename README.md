@@ -71,7 +71,8 @@ sh /robot_arm/Franka-Control/buildmodule.sh
   
   主程序(line 17)调用franka.py中的start_control_one(duration = 7.0)，进一步调用robotmodule.cpp中的start_control_one(), 
   robotmodule.cpp中的start_control_one()会**创建一个新的线程**执行robotmodule.cpp中的control_one()函数，机械臂开始往下一个目标角度移动，duration为这段路径所需要的时间。
-  这也是为什么主程序中line 20我们需要将主程序陷入死循环，因为control_one()是在一个新线程中运行的，如果主程序结束了，那么control_one()也将随之中断。
+  
+  这也是为什么主程序中(line 20)我们需要将主程序陷入死循环，因为control_one()是在一个新线程中运行的，如果主程序结束了，那么control_one()也将随之中断。
   ```
   #franka.py line 220
   def start_control_one(self, duration = 7.0):
