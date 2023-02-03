@@ -121,6 +121,11 @@ void * control_one(void* args){
     std::array<double, 7> end_joints;
 
     double time = 0.0;
+    
+    
+    //刚刚给过来的JointPosition_next。
+    
+    
     end_joints = JointPosition_next;
     
     //回调函数，可以理解为robot->control()函数的参数是个正在运行的函数
