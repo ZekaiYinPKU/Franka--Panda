@@ -18,7 +18,7 @@ https://frankaemika.github.io/docs/overview.html
 
 https://frankaemika.github.io/libfranka/
 
-4、Panda机械臂软件上的小毛病一大堆，尤其是安装前置依赖的过程中，并且有几率把ubuntu系统直接搞崩，一定勤用timeshift备份，一定勤用timeshift备份，一定勤用timeshift备份。
+4、Panda机械臂软件上的小毛病一大堆，尤其是安装前置依赖的过程中，甚至有几率把ubuntu系统直接搞崩，一定勤用timeshift备份，一定勤用timeshift备份，一定勤用timeshift备份。
 
 ## 2、Franka_Control
 
