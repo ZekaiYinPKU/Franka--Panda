@@ -30,7 +30,7 @@ sh /robot_arm/Franka-Control/buildmodule.sh
 ```
 重新编译package。
 
-如果移动了整个package的位置，则会编译报错为CMakeCache.txt记录的不一致，此时需要删除/robot_arm/Franka-Control/build文件夹中的所有内容重新编译
+如果移动了整个package的位置，会编译报错，大体意思为CMakeCache.txt记录的不一致，此时需要删除/robot_arm/Franka-Control/build文件夹中的所有内容重新编译
 
 ### 2.1、机械臂模块
 在scripts里共有两个和基本控制相关的脚本，move_according_to_array.py和move_to_one_pos.py，前者会操作机械臂在几个不同的位置之间循环移动，后者会操作机械臂仅运行到下一个位置。
