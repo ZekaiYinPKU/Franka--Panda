@@ -9,7 +9,7 @@
 
 以及陈德铭同学的https://github.com/Derick317/Typora/blob/main/Softwares/Franka_and_ROS/set_up.md
 
-进行安装，目前这个package可以在静园五院104控制机械臂的主机上使用，script文件夹中的所有程序均可运行。
+进行安装，目前这个package可以在静园五院104控制机械臂的主机上使用，scripts文件夹中的所有程序均可运行。
 
 3、
 franka官方文档：
