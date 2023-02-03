@@ -36,20 +36,20 @@ sh /robot_arm/Franka-Control/buildmodule.sh
 在scripts里共有两个和基本控制相关的脚本，move_according_to_array.py和move_to_one_pos.py，前者会操作机械臂在几个不同的位置之间循环移动，后者会操作机械臂仅运行到下一个位置。
 
 以move_to_one_pos为例，机械臂控制程序的运行逻辑如下：
-  主程序（python）首先创建一个robot实例R
+  主程序(line 7)首先创建一个robot实例R。
   ```
   #np.array([0, -np.pi / 4, 0, -3 * np.pi / 4, 0, np.pi / 2, np.pi / 4])是设置的robot初始状态
   r = Robot("172.16.0.2",np.array([0, -np.pi / 4, 0, -3 * np.pi / 4, 0, np.pi / 2, np.pi / 4]), 0.03)
   ```
 
-  主程序调用franka.py中的函数set_next_goal()，将目标角度赋值给robot实例R的self.next_goal
+  主程序(line 10)调用franka.py中的函数set_next_goal()，将目标角度赋值给robot实例R的self.next_goal
   ```
   #franka.py line 211
   def set_next_goal(self,joints):
      self.next_goal = joints
   ```
   
-  主程序调用franka.py中的set_next_goal_to_controller()，进而调用robotmodule.cpp中的set_next_goal_joints(double * joints)，将robot实例R的self.next_goal传给JointPosition_next。
+  主程序(line 13)调用franka.py中的set_next_goal_to_controller()，进而调用robotmodule.cpp中的set_next_goal_joints(double * joints)，将robot实例R的self.next_goal传给JointPosition_next。
   ```
   #franka.py line 214
   def set_next_goal_to_controller(self):
@@ -67,9 +67,9 @@ sh /robot_arm/Franka-Control/buildmodule.sh
  
   注：每个从python传给C的变量都需要使用franka.py中的convert_type函数，**具体请学习ctype的使用**。
   
-  主程序调用franka.py中的start_control_one(duration = 7.0)，进一步调用robotmodule.cpp中的start_control_one(), 
+  主程序(line 17)调用franka.py中的start_control_one(duration = 7.0)，进一步调用robotmodule.cpp中的start_control_one(), 
   robotmodule.cpp中的start_control_one()会**创建一个新的线程**执行robotmodule.cpp中的control_one()函数，机械臂开始往下一个目标角度移动，duration为这段路径所需要的时间。
-  这也是为什么主程序move_to_one_pose.py中第20行我们需要将主程序陷入死循环，因为control_one()是在一个新线程中运行的，如果主程序结束了，那么control_one()也将随之中断。
+  这也是为什么主程序中line 20我们需要将主程序陷入死循环，因为control_one()是在一个新线程中运行的，如果主程序结束了，那么control_one()也将随之中断。
   ```
   #franka.py line 220
   def start_control_one(self, duration = 7.0):
