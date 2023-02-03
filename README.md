@@ -3,7 +3,7 @@
 1、
   本package是在陈德铭同学的package的基础上修改得到的，原文地址https://github.com/Derick317/Franka-Control， 感谢陈德铭同学的大力支持和帮助。
 
-2、本package有非常多的前置系统要设置，包括实时内核、franka_ros、libfranka等，以及配套的realsense相关package，具体可参考
+2、本package有非常多的前置依赖需要设置，包括实时内核、franka_ros、libfranka等，以及配套的realsense相关package，具体可参考
 
 张继耀学长的https://github.com/Jiyao06/FrankaPanda
 
@@ -18,7 +18,7 @@ https://frankaemika.github.io/docs/overview.html
 
 https://frankaemika.github.io/libfranka/
 
-4、Panda机械臂软件上的小毛病一大堆，一定勤用timeshift。
+4、Panda机械臂软件上的小毛病一大堆，尤其是安装前置依赖的过程中，并且有几率直接把ubuntu系统直接搞崩，一定勤用timeshift备份，一定勤用timeshift备份，一定勤用timeshift备份。
 
 ## 2、Franka_Control
 
